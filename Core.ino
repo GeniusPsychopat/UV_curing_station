@@ -2,13 +2,14 @@
 //finish "time remaining" timers
 //complete the code for the end of the curing proccess
 //compile
+//verify that it actually works and doesn't just fry the electronics
 
 #include <LiquidCrystal.h>
 
-const int tent = 16;       //tentacle of LEDs, D13
+const int tent = 14;       //tentacle of LEDs, D13
 
-const int buttP = 15;      //adding time, D12
-const int buttM = 14;      //subtracting time, D11
+const int buttP = 13;      //adding time, D12
+const int buttM = 12;      //subtracting time, D11
 bool SbuttP = false;       //buttonState for buttons (State Button Plus)
 bool SbuttM = false;
 bool Beg = false;          //variables for long press
@@ -20,26 +21,29 @@ long PtimerVal = 2000;     //how long the long press should be
 long Mtimer = 0;
 long MtimerVal = 1000;
 
-const int Step = 11;          //rotation of the servo, D8
-const int Dir = 12;           //direction of rotation, D9
-const int En = 13;            //driver, D10
+const int Step = 9;          //rotation of the servo, D8
+const int Dir = 11;           //direction of rotation, D9
+const int En = 12;            //driver, D10
 
-const int LCDrs = 9;          //LCD rest, D6
-const int LCDen = 10;         //LCD enable, D7
-const int LCD4 = 5;           //D2
-const int LCD5 = 6;           //D3
-const int LCD6 = 7;           //D4
-const int LCD7 = 8;           //D5
+const int LCDrs = 7;          //LCD rest, D6
+const int LCDen = 8;          //LCD enable, D7
+const int LCD4 = 3;           //D2
+const int LCD5 = 4;           //D3
+const int LCD6 = 5;           //D4
+const int LCD7 = 6;           //D5
 LiquidCrystal lcd(LCDrs, LCDen, LCD4, LCD5, LCD6, LCD7);  //set-up
 
-int time1 = 0;   //time
-int time2 = 0;
-int time = 1;
+char min = 0;   //minutes
+char sec = 0;   //seconds
+bool Time = true;   //condition for if there is time left and if the end screen should be enabled
+char time = 0;  //for showing text and int at the same time; this one is for the text during curing proccess
+char emerg = 0;  //text during emergency
+char initia = 0;  //text during initializing
 
 void setup() {
   
   //time init
-  time1 = 5;
+  min = 5;
 
   //LCD init
   lcd.begin(16, 2);
@@ -75,23 +79,24 @@ void setup() {
 }
 
 void loop() {
+  time = "Time set: ", min, "m", sec, "s";
 
   lcd.clear();
   lcd.print("Uuvi");
   lcd.setCursor(0, 1);
-  lcd.print("Time set: "+time1+"m"+time2+"s");
+  lcd.print(time);
 
   //setting the time using buttons next to the LCD (5 minutes min, to 10 minutes: increment 1 minute; to 20 minutes: increment 2 minutes, 20 minutes max)
   if (digitalRead(buttP) == HIGH) {   //if the button is pressed..
     if (SbuttP == false) {  //..and it's not active, set it to active and start the timer 
       SbuttP = true;
-      Ptimer = milis();
+      Ptimer = millis();
     }
 
     //starting the curing proccess with a long press of the Plus Button
-    if ((milis() - Ptimer > PtimerVal) && (Beg == false) && (Begin == false)) { //if the set value for the timer is lower that the timer itself, begin the proccess
-      Beg = true    //temporary val for the loop
-      Begin = true  //actually begins the proccess
+    if ((millis() - Ptimer > PtimerVal) && (Beg == false) && (Begin == false)) { //if the set value for the timer is lower that the timer itself, begin the proccess
+      Beg = true;    //temporary val for the loop
+      Begin = true;  //actually begins the proccess
       }
     } else {  //if the timer isn't yet reached, the button is active..
       if (SbuttP == true) {
@@ -99,27 +104,29 @@ void loop() {
           Beg = false;
 
       } else {    //..and the temporary val is not triggered, add time
-        time1 = time1+1;
+        min = min+1;
+
+        if (min > 20) {
+          min = 20;
+        }
 
         }
 
-      SbuttP = false
+      SbuttP = false;
 
       }
 
-    }
-
-  } 
+    } 
 
   if (digitalRead(buttM) == HIGH) {
     if (SbuttM == false) {
       SbuttM = true;
-      Mtimer = milis();
+      Mtimer = millis();
     }
 
-    if ((milis() - Mtimer > MtimerVal) && (Emer == false) && (Emergency == false)) {
-      Emer = true
-      Emergency = true
+    if ((millis() - Mtimer > MtimerVal) && (Emer == false) && (Emergency == false)) {
+      Emer = true;
+      Emergency = true;
       }
     } else {
       if (SbuttM == true) {
@@ -127,13 +134,13 @@ void loop() {
           Emer = false;
 
         } else {
-          time1 = time1-1;
+          min = min-1;
 
-          if time1 < 5 {
-            time1 = 5;
+          if (min < 5) {
+            min = 5;
           }
 
-        SbuttM = false
+        SbuttM = false;
 
         }
 
@@ -141,33 +148,38 @@ void loop() {
 
     }
 
-  }
-
   if (Begin == true) { //starting the curing process
-
+    initia = "Initializing... Time set: ", min, "m", sec, "s";
     //(Initializing... )  -->>  (Curing InPro.. )
     //(Time set: 10m00s)  -->>  (Time rem: 9m59s)  
+    Time = true;
+    
     lcd.clear();
-    lcd.print("Initializing... Time set: "+time1+"m"+time2+"s");   //init.
+    lcd.print(initia);   //init.
     delay(2500);
 
-    lcd.home;
+    lcd.home();
     lcd.print("Curing InPro.. ");
     digitalWrite(Step, HIGH);       //spuštění motoru
 
-    }
+    };
   
+
+  if (Emergency == true) {  //E-stop
+    emerg = "!Emergency Stop!Time rem: ",min,"m",sec,"s";
     //   (!Emergency stop!)
     //   (Time rem: 09m59s)
-  if (Emergency == true) {  //E-stop
     lcd.clear();
-    lcd.print("!Emergency Stop!Time rem: "+time1+"m"+time2+"s");
+    lcd.print(emerg);
     digitalWrite(En, HIGH);      //turning off the driver
     digitalWrite(tent, LOW);     //turning off the tentacle
+  };
+
+  if ((Time == true) && ()) {
+
+
   }
 
   //Finishing the proccess (Curing finished )
-  //                       (Time rem: 00m00s)
-  //lock servo
-  
+  //                       (Time rem: 00m00s)  
 }
