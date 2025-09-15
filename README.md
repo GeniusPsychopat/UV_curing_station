@@ -29,5 +29,6 @@ In no particular order:
 8. Transformer - used to reduce your wall power AC to 24DC for the electronics
 9. LM2596 - DC to DC buck converter, used to reduce the voltage from 24V to 5V for the Ardui
 10. 24 LEDs and 24 60ohm resistors - The reason why am I doing all this
+11. Slip-ring - pretty nifty thing, allows you to have 2 or more cables on a turntable without them twisting together
 
 I believe this is everything, will fix if I find something I missed
