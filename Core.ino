@@ -1,17 +1,11 @@
-//TO-DO:
-//finish "time remaining" timers
-//complete the code for the end of the curing proccess
-//compile
-//verify that it actually works and doesn't just fry the electronics
-
 #include <LiquidCrystal.h>
 
 const int tent = 13;       //tentacle of LEDs, D13
 
 const int buttP = 12;      //adding time, D12
 const int buttM = 11;      //subtracting time, D11
-bool SbuttP = false;       //buttonState for buttons (State Button Plus)
-bool SbuttM = false;
+int SbuttP = 0;       //buttonState for buttons (State Button Plus)
+int SbuttM = 0;
 bool Beg = false;          //variables for long press
 bool Emer = false;
 bool Begin = false;
@@ -33,15 +27,15 @@ const int LCD6 = 4;           //D4
 const int LCD7 = 5;           //D5
 LiquidCrystal lcd(LCDrs, LCDen, LCD4, LCD5, LCD6, LCD7);  //set-up
 
-char min = 0;   //minutes
-char sec = 0;   //seconds
+int min = 0;   //minutes
+int sec = 0;   //seconds
 int decrement = 1;
 bool Time = true;   //condition for if there is time left and if the end screen should be enabled
-char timer = 0;  //for showing text and int at the same time; this one is for the text during curing proccess
-bool freeze = true
+bool freeze = true;    //freeze the timer
+String timer = "";     //for showing text and int at the same time; this one is for the text during curing proccess
 
 void setup() {
-  
+
   //time init
   sec = 300;
   min = sec/60;
@@ -84,13 +78,13 @@ void setup() {
 }
 
 void loop() {
-  timer = "Time set: ", min, "m", sec, "s";
+  timer = "Time set: "+ String(min) + ":m" + String(sec) + ":s";
 
   //setting the time using buttons next to the LCD (5 minutes min, to 10 minutes: increment 1 minute; to 20 minutes: increment 2 minutes, 20 minutes max)
   if (digitalRead(buttP) == HIGH) {   //if the button is pressed..
     
     lcd.setCursor(0, 1);
-    lcd.print(time);
+    lcd.print(timer);
     if (SbuttP == false) {  //..and it's not active, set it to active and start the timer 
       SbuttP = true;
       Ptimer = millis();
@@ -159,7 +153,7 @@ void loop() {
     //(Time set: 10m00s)  -->>  (Time rem: 9m59s)  
     
     lcd.setCursor(0, 0);
-    lcd.print("Initializing...")
+    lcd.print("Initializing...");
     lcd.setCursor(0, 1);
     lcd.print(timer);   //init.
     delay(2500);
@@ -167,7 +161,7 @@ void loop() {
     lcd.setCursor(0, 0);
     lcd.print("Curing InPro.. ");
     digitalWrite(Step, HIGH);       //spuštění motoru
-    delay(2500);
+    delay(1000);
     freeze = false;
     Begin = false;
   }
