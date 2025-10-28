@@ -15,7 +15,7 @@ I will try to include all the code, sketches/diagrams, .stl files, and anything 
 
 
 ## When?
-The project is gonna be slightly postponed, I got the wrong type of slip-ring. It is still done in my free time mostly.. I do have a day job, plus wayyy to many responsibilities to make any promises to keep, but if I'm in the mood I'm gonna make some goddamn commits. The project is NOT gonna be finished by the end of September 25', because of the part, but I will still make commits to the project.
+The project is gonna be slightly postponed, I got the wrong type of slip-ring. It is still done in my free time mostly.. I do have a day job, plus wayyy to many responsibilities to make any promises to keep, but if I'm in the mood I'm gonna make some goddamn commits. The project is will HOPEFULLY have MVP (minimal viable product) by the end of the year. But I will still try make commits to the project, until it is as good as can be.
 
 ## Part list
 In no particular order:
