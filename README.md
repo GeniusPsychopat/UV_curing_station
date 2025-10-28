@@ -15,7 +15,7 @@ I will try to include all the code, sketches/diagrams, .stl files, and anything 
 
 
 ## When?
-The project is gonna be slightly postponed, I got the wrong type of slip-ring. It is still done in my free time mostly.. I do have a day job, plus wayyy to many responsibilities to make any promises to keep, but if I'm in the mood I'm gonna make some goddamn commits. The project is will HOPEFULLY have MVP (minimal viable product) by the end of the year. But I will still try make commits to the project, until it is as good as can be.
+It is done in my free time mostly.. I do have a day job, plus wayyy to many responsibilities to make any promises to keep, but if I'm in the mood I'm gonna make some goddamn commits. The project is will HOPEFULLY have MVP (minimal viable product) by the end of the year. But I will still try make commits to the project, until it is as good as can be.
 
 ## Part list
 In no particular order:
@@ -27,9 +27,8 @@ In no particular order:
 6. Stepper driver expansion shield - Again, could do without this, but numbers are hard, and apparently this uses less cables or whatever
 7. 24V Fan - Used to cool down this circus, any voltage could work as long as you are willing to work for it
 8. Transformer - used to reduce your wall power AC to 24DC for the electronics
-9. Slip-ring /w a hole - Needed for the tentacle which rotates.
-10. LM2596 - DC to DC buck converter, used to reduce the voltage from 24V to 5V for the Ardui
-11. 24 LEDs and 24 60ohm resistors - The reason why am I doing all this
-12. Slip-ring - pretty nifty thing, allows you to have 2 or more cables on a turntable without them twisting together
+9. LM2596 - DC to DC buck converter, used to reduce the voltage from 24V to 5V for the Ardui
+10. 24 UV LEDs and 24 60ohm resistors - The reason why am I doing all this
+11. Slip-ring /w a hole - pretty nifty thing, allows you to have 2 or more cables on a turntable without them twisting together
 
-I believe this is everything, will fix if I find something I missed
+I believe this is everything, will ammend if something missing is found.
